@@ -1,6 +1,10 @@
 public class MyCode implements Runnable{
 
-     static int t=1;
+    int t;
+
+    public MyCode(int t){
+        this.t = t;
+    }
 
     public void run() {
         for (int i=1;i<=10000;i++){
