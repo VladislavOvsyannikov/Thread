@@ -6,10 +6,11 @@ public class Counter {
     }
 
     public void start() throws InterruptedException {
-        Thread t1 = new Thread(new MyCode(t));
-        Thread t2 = new Thread(new MyCode(t));
-        Thread t3 = new Thread(new MyCode(t));
-        Thread t4 = new Thread(new MyCode(t));
+        MyCode code = new MyCode(t);
+        Thread t1 = new Thread(code);
+        Thread t2 = new Thread(code);
+        Thread t3 = new Thread(code);
+        Thread t4 = new Thread(code);
 
         t1.start();
         t2.start();
@@ -22,33 +23,25 @@ public class Counter {
         t4.join();
     }
 
-    public static class MyCode implements Runnable{
-        static int t;
+    public class MyCode implements Runnable{
+        int t;
 
         public MyCode(int t){
             this.t = t;
         }
 
         public void run() {
-            for (int i=1;i<=10000;i++){
-                System.out.println(getFree());
+            for (int i=1;i<=10000;i++) {
+                synchronized (this) {
+                    System.out.println(getFree());
+                }
             }
         }
 
-        public synchronized int getFree(){
-            return t++;
+        public int getFree(){
+            synchronized(this) {
+                return t++;
+            }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }
